@@ -41,6 +41,7 @@ class MazdaFlags(IntFlag):
   # Static flags
   # Gen 1 hardware: same CAN messages and same camera
   GEN1 = 1
+  CX50H = 99
 
 
 @dataclass
@@ -73,6 +74,12 @@ class CAR(Platforms):
   MAZDA_CX5_2022 = MazdaPlatformConfig(
     [MazdaCarDocs("Mazda CX-5 2022-25")],
     MAZDA_CX5.specs,
+  )
+  MAZDA_CX50_HYBRID_2025 = MazdaPlatformConfig(
+    [MazdaCarDocs("Mazda CX-50 Hybrid 2025")],
+    MazdaCarSpecs(mass=4008 * CV.LB_TO_KG, wheelbase=2.81432, steerRatio=15.5),
+    {Bus.pt: 'mazda_cx50_hybrid_2025'},
+    MazdaFlags.CX50H
   )
 
 

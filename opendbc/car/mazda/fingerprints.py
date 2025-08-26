@@ -280,4 +280,18 @@ FW_VERSIONS = {
       b'PXM7-21PS1-C\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
   },
+  CAR.MAZDA_CX50_HYBRID_2025: {
+    (Ecu.eps, 0x730, None): [
+      b'VC67-3216Y-A\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+    ],
+    (Ecu.engine, 0x7e8, None): [
+    ],
+    (Ecu.abs, 0x760, None): [
+      b'VC67-4300F-A\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+    ],
+    (Ecu.transmission, 0x7ef, None): [
+    ],
+    (Ecu.hybrid, 0x7ea, None): [
+    ],
+  },
 }

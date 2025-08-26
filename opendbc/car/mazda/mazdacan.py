@@ -1,7 +1,9 @@
+from opendbc.car.crc import CRC8H2F
 from opendbc.car.mazda.values import Buttons, MazdaFlags
 
-
 def create_steering_control(packer, CP, frame, apply_torque, lkas):
+  if CP.flags & MazdaFlags.CX50H:
+    return create_steering_control_cx50h(packer, CP, frame, apply_torque, lkas)
 
   tmp = apply_torque + 2048
 
@@ -61,6 +63,61 @@ def create_steering_control(packer, CP, frame, apply_torque, lkas):
 
   return packer.make_can_msg("CAM_LKAS", 0, values)
 
+def create_steering_control_cx50h(packer, CP, frame, apply_torque, lkas):
+  values = {
+    "CHKSUM": 0,
+    "CTR": lkas["CTR"],
+    "LKAS_EFFECTIVE": 1,
+    "LKAS_EFFECTIVE_INV": 0,
+    "BIT_1": lkas["BIT_1"],
+    "STEER_TORQUE_MOTOR": lkas["STEER_TORQUE_MOTOR"],
+    "STEER_TORQUE_SENSOR": 0,
+    "LKAS_REQUEST": apply_torque
+  }
+
+  _, dat, _ = packer.make_can_msg("CAM_LKAS", 0, values)
+
+  values["CHKSUM"] = mazda_cx50_hybrid_checksum(dat)
+  values["STEER_TORQUE_SENSOR"] = lkas["STEER_TORQUE_SENSOR"]
+
+  # dat = [
+  #   (0x10) | (lkas["CTR"] & 0x0F),
+  #   (lkas["BIT_1"] << 5) | ((tmp >> 9) & 0x0F),
+  #   ((tmp >> 1) & 0xFF),
+  #   ((tmp & 0x01) << 7) | (0x3D),
+  #   (0x20) | ((lkas["STEER_TORQUE_MOTOR"] >> 8) & 0x1F),
+  #   (lkas["STEER_TORQUE_MOTOR"] & 0xFF),
+  #   0x00
+  # ]
+
+  packer.make_can_msg("CAM_LKAS", 0, values)
+
+MAZDA_CX50_HYBRID_CHECKSUM_INITIAL = {
+  0x00: 0xde,
+  0x01: 0xa4,
+  0x02: 0xe5,
+  0x03: 0x06,
+  0x04: 0xb2,
+  0x05: 0xab,
+  0x06: 0x9b,
+  0x07: 0x4b,
+  0x08: 0x7e,
+  0x09: 0x8d,
+  0x0A: 0x3c,
+  0x0B: 0x37,
+  0x0C: 0x28,
+  0x0D: 0xb1,
+  0x0E: 0x18,
+  0x0F: 0x82
+}
+
+def mazda_cx50_hybrid_checksum(d: bytearray) -> int:
+  counter = d[1] & 0x0F
+  crc = MAZDA_CX50_HYBRID_CHECKSUM_INITIAL[counter]
+  for i in range(1, len(d)):
+    crc ^= d[i]
+    crc = CRC8H2F[crc]
+  return crc ^ 0x00
 
 def create_alert_command(packer, cam_msg: dict, ldw: bool, steer_required: bool):
   values = {s: cam_msg[s] for s in [
