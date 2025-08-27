@@ -106,11 +106,11 @@ FW_QUERY_CONFIG = FwQueryConfig(
       bus=0,
     ),
   ],
-  extra_ecus=[
-    (Ecu.abs, 0x7EC, None),
-    (Ecu.engine, 0x7EF, None),
-    (Ecu.hybrid, 0x7E8, None),
-  ]
+  # extra_ecus=[
+  #   (Ecu.abs, 0x7EC, None),
+  #   (Ecu.engine, 0x7EF, None),
+  #   (Ecu.hybrid, 0x7E8, None),
+  # ]
 )
 
 DBC = CAR.create_dbc_map()
