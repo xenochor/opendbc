@@ -3,7 +3,7 @@ from opendbc.car import Bus, structs
 from opendbc.car.lateral import apply_driver_steer_torque_limits
 from opendbc.car.interfaces import CarControllerBase
 from opendbc.car.mazda import mazdacan
-from opendbc.car.mazda.values import CarControllerParams, Buttons
+from opendbc.car.mazda.values import CarControllerParams, Buttons, MazdaFlags
 
 VisualAlert = structs.CarControl.HUDControl.VisualAlert
 
@@ -46,7 +46,7 @@ class CarController(CarControllerBase):
     self.apply_torque_last = apply_torque
 
     # send HUD alerts
-    if self.frame % 50 == 0:
+    if (self.frame % 50 == 0) and (self.CP.flags & MazdaFlags.GEN1):
       ldw = CC.hudControl.visualAlert == VisualAlert.ldw
       steer_required = CC.hudControl.visualAlert == VisualAlert.steerRequired
       # TODO: find a way to silence audible warnings so we can add more hud alerts
