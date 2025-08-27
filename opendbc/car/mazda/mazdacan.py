@@ -90,7 +90,7 @@ def create_steering_control_cx50h(packer, CP, frame, apply_torque, lkas):
   #   0x00
   # ]
 
-  packer.make_can_msg("CAM_LKAS", 0, values)
+  return packer.make_can_msg("CAM_LKAS", 0, values)
 
 MAZDA_CX50_HYBRID_CHECKSUM_INITIAL = {
   0x00: 0xde,
