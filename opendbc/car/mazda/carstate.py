@@ -79,7 +79,7 @@ class CarState(CarStateBase):
     ret.gasPressed = cp.vl["ENGINE_DATA"]["PEDAL_GAS"] > 0
 
     # Either due to low speed or hands off
-    lkas_blocked = 0
+    lkas_blocked = False
     if self.CP.flags & MazdaFlags.GEN1:
       lkas_blocked = cp.vl["STEER_RATE"]["LKAS_BLOCK"] == 1
 
