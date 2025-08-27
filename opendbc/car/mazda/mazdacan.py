@@ -72,24 +72,13 @@ def create_steering_control_cx50h(packer, CP, frame, apply_torque, lkas):
     "BIT_1": lkas["BIT_1"],
     "INVARIANT": 489,
     "STEER_TORQUE_MOTOR": lkas["STEER_TORQUE_MOTOR"],
-    "STEER_TORQUE_SENSOR": 0,
+    "STEER_TORQUE_SENSOR": lkas["STEER_TORQUE_SENSOR"],
     "LKAS_REQUEST": apply_torque
   }
 
   _, dat, _ = packer.make_can_msg("CAM_LKAS", 0, values)
 
   values["CHKSUM"] = mazda_cx50_hybrid_checksum(dat)
-  values["STEER_TORQUE_SENSOR"] = lkas["STEER_TORQUE_SENSOR"]
-
-  # dat = [
-  #   (0x10) | (lkas["CTR"] & 0x0F),
-  #   (lkas["BIT_1"] << 5) | ((tmp >> 9) & 0x0F),
-  #   ((tmp >> 1) & 0xFF),
-  #   ((tmp & 0x01) << 7) | (0x3D),
-  #   (0x20) | ((lkas["STEER_TORQUE_MOTOR"] >> 8) & 0x1F),
-  #   (lkas["STEER_TORQUE_MOTOR"] & 0xFF),
-  #   0x00
-  # ]
 
   return packer.make_can_msg("CAM_LKAS", 0, values)
 
@@ -113,12 +102,13 @@ MAZDA_CX50_HYBRID_CHECKSUM_INITIAL = {
 }
 
 def mazda_cx50_hybrid_checksum(d: bytearray) -> int:
+  # First byte is checksum, last byte is always zero, initial value is determined by counter
   counter = d[1] & 0x0F
   crc = MAZDA_CX50_HYBRID_CHECKSUM_INITIAL[counter]
-  for i in range(1, len(d)):
+  for i in range(1, len(d) - 1):
     crc ^= d[i]
     crc = CRC8H2F[crc]
-  return crc ^ 0x00
+  return CRC8H2F[crc]
 
 def create_alert_command(packer, cam_msg: dict, ldw: bool, steer_required: bool):
   values = {s: cam_msg[s] for s in [
