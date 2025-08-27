@@ -70,6 +70,7 @@ def create_steering_control_cx50h(packer, CP, frame, apply_torque, lkas):
     "LKAS_EFFECTIVE": 1,
     "LKAS_EFFECTIVE_INV": 0,
     "BIT_1": lkas["BIT_1"],
+    "INVARIANT": 489,
     "STEER_TORQUE_MOTOR": lkas["STEER_TORQUE_MOTOR"],
     "STEER_TORQUE_SENSOR": 0,
     "LKAS_REQUEST": apply_torque
