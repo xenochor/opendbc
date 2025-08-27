@@ -115,17 +115,12 @@ BO_ 533 WHEEL_SPEEDS: 8 XXX
 
 BO_ 543 CRZ_EVENTS: 8 XXX
  SG_ NEW_SIGNAL_2 : 7|8@0+ (1,0) [0|255] "" XXX
- SG_ NEW_SIGNAL_1 : 11|4@0+ (1,0) [0|15] "" XXX
- SG_ NEW_SIGNAL_3 : 13|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_9 : 17|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_8 : 18|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_7 : 19|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_6 : 20|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_5 : 21|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_4 : 22|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_11 : 23|1@0+ (1,0) [0|1] "" XXX
- SG_ ACCEL_CMD : 31|8@0+ (1,0) [0|255] "" XXX
- SG_ NEW_SIGNAL_10 : 36|6@0+ (1,0) [0|63] "" XXX
+ SG_ CTR : 11|4@0+ (1,0) [0|15] "" XXX
+ SG_ CRZ_CANCEL : 13|1@0+ (1,0) [0|1] "" XXX
+ SG_ CRZ_SPEED : 22|6@0+ (1,0) [0|63] "" XXX
+ SG_ ACCEL_CMD : 30|6@0+ (1,0) [0|63] "" XXX
+ SG_ NEW_SIGNAL_4 : 32|1@0+ (1,0) [0|1] "" XXX
+ SG_ NEW_SIGNAL_5 : 47|1@0+ (1,0) [0|1] "" XXX
 
 BO_ 552 GEAR: 8 XXX
  SG_ GEAR : 2|3@0+ (1,0) [0|7] "" XXX
@@ -164,8 +159,8 @@ BO_ 1096 CAM_LANEINFO: 8 XXX
  SG_ LEFT_LANE_DETECTED : 55|1@0+ (1,0) [0|1] "" XXX
 
 BO_ 1098 CRZ_CTRL: 8 XXX
- SG_ CRZ_ACTIVE : 2|1@0+ (1,0) [0|1] "" XXX
- SG_ NEW_SIGNAL_1 : 4|1@0+ (1,0) [0|1] "" XXX
+ SG_ NEW_SIGNAL_2 : 2|1@0+ (1,0) [0|1] "" XXX
+ SG_ CRZ_ACTIVE : 4|1@0+ (1,0) [0|1] "" XXX
  SG_ CRZ_AVAILABLE : 5|1@0+ (1,0) [0|1] "" XXX
  SG_ NEW_SIGNAL_5 : 16|1@0+ (1,0) [0|1] "" XXX
  SG_ NEW_SIGNAL_4 : 25|1@0+ (1,0) [0|1] "" XXX
