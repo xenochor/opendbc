@@ -281,11 +281,11 @@ FW_VERSIONS = {
     ],
   },
   CAR.MAZDA_CX50_HYBRID_2025: {
-    (Ecu.eps, 0x730, None): [
-      b'VC67-3216Y-A\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
-    ],
     (Ecu.abs, 0x760, None): [
       b'VC67-4300F-A\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
+    ],
+    (Ecu.eps, 0x730, None): [
+      b'VC67-3216Y-A\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00',
     ],
   },
 }
