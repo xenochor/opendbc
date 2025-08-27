@@ -40,8 +40,8 @@ class MazdaCarSpecs(CarSpecs):
 class MazdaFlags(IntFlag):
   # Static flags
   # Gen 1 hardware: same CAN messages and same camera
-  GEN1 = 1
-  CX50H = 99
+  GEN1 = 0x01
+  CX50H = 0x80
 
 
 @dataclass
