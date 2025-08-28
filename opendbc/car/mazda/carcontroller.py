@@ -14,8 +14,8 @@ class CarController(CarControllerBase):
     self.apply_torque_last = 0
     self.packer = CANPacker(dbc_names[Bus.pt])
     self.brake_counter = 0
-    self.running = False
-    self.last_lkas_counter = -1
+    self.last_pt_lkas_counter = -1
+    self.last_cam_lkas_counter = -1
 
   def update(self, CC, CS, now_nanos):
     can_sends = []
@@ -55,14 +55,24 @@ class CarController(CarControllerBase):
       steer_required = steer_required and CS.lkas_allowed_speed
       can_sends.append(mazdacan.create_alert_command(self.packer, CS.cam_laneinfo, ldw, steer_required))
 
-    # send steering command
+    # forward CAM_LKAS in both directions
     pt_lkas_counter = CS.pt_lkas["CTR"]
     pt_lkas_valid = CS.pt_lkas["LKAS_EFFECTIVE"] or CS.pt_lkas["LKAS_EFFECTIVE_INV"]
 
-    if (pt_lkas_valid) and (pt_lkas_counter != self.last_lkas_counter):
-      self.last_lkas_counter = pt_lkas_counter
-      can_sends.append(mazdacan.create_steering_control(self.packer, self.CP,
-                                                        self.frame, apply_torque, CS.pt_lkas))
+    if (pt_lkas_valid) and (pt_lkas_counter != self.last_pt_lkas_counter):
+      self.last_pt_lkas_counter = pt_lkas_counter
+      can_sends.append(self.packer.make_can_msg("CAM_LKAS", 2, CS.pt_lkas))
+
+    cam_lkas_counter = CS.cam_lkas["CTR"]
+    cam_lkas_valid = CS.cam_lkas["LKAS_EFFECTIVE"] or CS.cam_lkas["LKAS_EFFECTIVE_INV"]
+
+    if (cam_lkas_valid) and (cam_lkas_counter != self.last_cam_lkas_counter):
+      self.last_cam_lkas_counter = cam_lkas_counter
+      can_sends.append(self.packer.make_can_msg("CAM_LKAS", 0, CS.cam_lkas))
+
+    # send steering command
+    # can_sends.append(mazdacan.create_steering_control(self.packer, self.CP,
+    #                                                     self.frame, apply_torque, CS.pt_lkas))
 
     new_actuators = CC.actuators.as_builder()
     new_actuators.torque = apply_torque / CarControllerParams.STEER_MAX
