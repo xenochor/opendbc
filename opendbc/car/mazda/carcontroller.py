@@ -14,6 +14,8 @@ class CarController(CarControllerBase):
     self.apply_torque_last = 0
     self.packer = CANPacker(dbc_names[Bus.pt])
     self.brake_counter = 0
+    self.running = False
+    self.last_lkas_counter = -1
 
   def update(self, CC, CS, now_nanos):
     can_sends = []
@@ -54,8 +56,16 @@ class CarController(CarControllerBase):
       can_sends.append(mazdacan.create_alert_command(self.packer, CS.cam_laneinfo, ldw, steer_required))
 
     # send steering command
-    can_sends.append(mazdacan.create_steering_control(self.packer, self.CP,
-                                                      self.frame, apply_torque, CS.cam_lkas))
+    pt_lkas_counter = CS.pt_lkas["CTR"]
+    cam_lkas_counter = CS.cam_lkas["CTR"]
+
+    if (cam_lkas_counter != pt_lkas_counter):
+      self.running = True
+
+    if (self.running) and (cam_lkas_counter != self.last_lkas_counter):
+      self.last_lkas_counter = cam_lkas_counter
+      can_sends.append(mazdacan.create_steering_control(self.packer, self.CP,
+                                                        self.frame, apply_torque, CS.cam_lkas))
 
     new_actuators = CC.actuators.as_builder()
     new_actuators.torque = apply_torque / CarControllerParams.STEER_MAX

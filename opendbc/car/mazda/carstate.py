@@ -128,6 +128,7 @@ class CarState(CarStateBase):
       self.crz_btns_counter = cp.vl["CRZ_BTNS"]["CTR"]
 
     # camera signals
+    self.pt_lkas = cp.vl["CAM_LKAS"]
     self.cam_lkas = cp_cam.vl["CAM_LKAS"]
     self.cam_laneinfo = cp_cam.vl["CAM_LANEINFO"]
 
