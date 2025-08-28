@@ -57,15 +57,12 @@ class CarController(CarControllerBase):
 
     # send steering command
     pt_lkas_counter = CS.pt_lkas["CTR"]
-    cam_lkas_counter = CS.cam_lkas["CTR"]
+    pt_lkas_valid = CS.pt_lkas["LKAS_EFFECTIVE"] or CS.pt_lkas["LKAS_EFFECTIVE_INV"]
 
-    if (cam_lkas_counter != pt_lkas_counter):
-      self.running = True
-
-    if (self.running) and (cam_lkas_counter != self.last_lkas_counter):
-      self.last_lkas_counter = cam_lkas_counter
+    if (pt_lkas_valid) and (pt_lkas_counter != self.last_lkas_counter):
+      self.last_lkas_counter = pt_lkas_counter
       can_sends.append(mazdacan.create_steering_control(self.packer, self.CP,
-                                                        self.frame, apply_torque, CS.cam_lkas))
+                                                        self.frame, apply_torque, CS.pt_lkas))
 
     new_actuators = CC.actuators.as_builder()
     new_actuators.torque = apply_torque / CarControllerParams.STEER_MAX
