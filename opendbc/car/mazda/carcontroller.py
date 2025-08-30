@@ -61,14 +61,14 @@ class CarController(CarControllerBase):
 
     if (pt_lkas_valid) and (pt_lkas_counter != self.last_pt_lkas_counter):
       self.last_pt_lkas_counter = pt_lkas_counter
-      can_sends.append(self.packer.make_can_msg("CAM_LKAS", 2, CS.pt_lkas))
+      # can_sends.append(self.packer.make_can_msg("CAM_LKAS", 2, CS.pt_lkas))
 
     cam_lkas_counter = CS.cam_lkas["CTR"]
     cam_lkas_valid = CS.cam_lkas["LKAS_EFFECTIVE"] or CS.cam_lkas["LKAS_EFFECTIVE_INV"]
 
     if (cam_lkas_valid) and (cam_lkas_counter != self.last_cam_lkas_counter):
       self.last_cam_lkas_counter = cam_lkas_counter
-      can_sends.append(self.packer.make_can_msg("CAM_LKAS", 0, CS.cam_lkas))
+      # can_sends.append(self.packer.make_can_msg("CAM_LKAS", 0, CS.cam_lkas))
 
     # send steering command
     # can_sends.append(mazdacan.create_steering_control(self.packer, self.CP,
